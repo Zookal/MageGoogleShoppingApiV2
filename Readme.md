@@ -38,24 +38,24 @@ following content:
 ```json
 {
 	"require": {
-		"bluevisiontec/googleshoppingapi": "*",
-		"magento-hackathon/magento-composer-installer": "*",
-		"google/apiclient": "*"
+		"bluevisiontec/googleshoppingapi": "dev-master",
+		"zookal/google_apiclient": "dev-master"
+	},
+	"suggest": {
+	    "magento-hackathon/magento-composer-installer": "*",
 	},
 	"repositories": [
+		...
 		{
-			"type": "composer",
-			"url": "http://packages.firegento.com"
+				"type": "vcs",
+				"url": "git@github.com:Zookal/GoogleShoppingApi.git"
 		},
 		{
 				"type": "vcs",
-				"url": "https://github.com/bluevisiontec/GoogleShoppingApi"
+				"url": "git@github.com:Zookal/google-api-php-client.git"
 		}
 	],
-	"extra": {
-		"magento-root-dir": "./",
-		"magento-deploystrategy": "copy"
-	}
+	...
 }
 ```
 
