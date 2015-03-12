@@ -1,6 +1,6 @@
 <?php
 /**
- * @category	BlueVisionTec
+ * @category    BlueVisionTec
  * @package     BlueVisionTec_GoogleShoppingApi
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @copyright   Copyright (c) 2015 BlueVisionTec UG (haftungsbeschränkt) (http://www.bluevisiontec.de)
@@ -10,12 +10,13 @@
 /**
  * Sipping weight attribute model
  *
- * @category	BlueVisionTec
- * @package    BlueVisionTec_GoogleShoppingApi
- * @author     Magento Core Team <core@magentocommerce.com>
+ * @category    BlueVisionTec
+ * @package     BlueVisionTec_GoogleShoppingApi
+ * @author      Magento Core Team <core@magentocommerce.com>
  * @author      BlueVisionTec UG (haftungsbeschränkt) <magedev@bluevisiontec.eu>
  */
-class BlueVisionTec_GoogleShoppingApi_Model_Attribute_ShippingWeight extends BlueVisionTec_GoogleShoppingApi_Model_Attribute_Default
+class BlueVisionTec_GoogleShoppingApi_Model_Attribute_ShippingWeight
+    extends BlueVisionTec_GoogleShoppingApi_Model_Attribute_Default
 {
     /**
      * Default weight unit
@@ -27,23 +28,29 @@ class BlueVisionTec_GoogleShoppingApi_Model_Attribute_ShippingWeight extends Blu
     /**
      * Set current attribute to entry (for specified product)
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Catalog_Model_Product             $product
      * @param Google_Service_ShoppingContent_Product $shoppingProduct
+     *
      * @return Google_Service_ShoppingContent_Product
      */
     public function convertAttribute($product, $shoppingProduct)
     {
+        $sp = $this->_dispatch('bluevisiontec_googleshoppingapi_attribute_shippingweight', $product, $shoppingProduct);
+        if ($sp !== null) {
+            return $sp;
+        }
+
         $mapValue = $this->getProductAttributeValue($product);
         if (!$mapValue) {
-            $weight = $this->getGroupAttributeWeight();
+            $weight   = $this->getGroupAttributeWeight();
             $mapValue = $weight ? $weight->getProductAttributeValue($product) : null;
         }
-		
+
         if ($mapValue) {
-			$shippingWeight = new Google_Service_ShoppingContent_ProductShippingWeight();
-			$shippingWeight->setValue($mapValue);
-			$shippingWeight->setUnit(self::WEIGHT_UNIT);
-			$shoppingProduct->setShippingWeight($shippingWeight);
+            $shippingWeight = new Google_Service_ShoppingContent_ProductShippingWeight();
+            $shippingWeight->setValue($mapValue);
+            $shippingWeight->setUnit(self::WEIGHT_UNIT);
+            $shoppingProduct->setShippingWeight($shippingWeight);
         }
 
         return $shoppingProduct;

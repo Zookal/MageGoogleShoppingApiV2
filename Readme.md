@@ -27,6 +27,43 @@ version, but will be re-enabled soon.
 * adds Austria as target country
 * ability to set Google product category in Magento product details
 
+### Events
+
+The following events will get dispatched:
+
+- `bluevisiontec_googleshoppingapi_attribute_*` please see folder: `Model/Attribute/`
+- and more @todo
+
+To implement an observer for the events `bluevisiontec_googleshoppingapi_attribute_*`
+you can use this example:
+
+```php
+
+    /**
+     * @dispatch bluevisiontec_googleshoppingapi_attribute_imagelink
+     *
+     * @param Varien_Event_Observer $observer
+     *
+     * @return mixed
+     */
+    public function convertImageAttribute(Varien_Event_Observer $observer)
+    {
+        /** @var Mage_Catalog_Model_Product $product */
+        $product = $observer->getEvent()->getProduct();
+        /** @var Google_Service_ShoppingContent_Product $shoppingProduct */
+        $shoppingProduct = $observer->getEvent()->getShoppingProduct();
+        /** @var Varien_Object $dispatchNotifier */
+        $dispatchNotifier = $observer->getEvent()->getDispatched();
+
+        // some fancy code ...
+
+        if ($_productThumbnail) {
+            $shoppingProduct->setImageLink($_productThumbnail);
+            $dispatchNotifier->setData('has_changes', true);
+        }
+    }
+```
+
 ## Installation
 
 As the Google ApiClient must be installed in addition, it is recommended to 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @category	BlueVisionTec
+ * @category    BlueVisionTec
  * @package     BlueVisionTec_GoogleShoppingApi
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @copyright   Copyright (c) 2015 BlueVisionTec UG (haftungsbeschränkt) (http://www.bluevisiontec.de)
@@ -10,27 +10,34 @@
 /**
  * Sale price effective date attribute model.
  *
- * @category	BlueVisionTec
- * @package    BlueVisionTec_GoogleShoppingApi
- * @author     Magento Core Team <core@magentocommerce.com>
+ * @category    BlueVisionTec
+ * @package     BlueVisionTec_GoogleShoppingApi
+ * @author      Magento Core Team <core@magentocommerce.com>
  * @author      BlueVisionTec UG (haftungsbeschränkt) <magedev@bluevisiontec.eu>
  */
-class BlueVisionTec_GoogleShoppingApi_Model_Attribute_SalePriceEffectiveDate extends BlueVisionTec_GoogleShoppingApi_Model_Attribute_Default
+class BlueVisionTec_GoogleShoppingApi_Model_Attribute_SalePriceEffectiveDate
+    extends BlueVisionTec_GoogleShoppingApi_Model_Attribute_Default
 {
     /**
      * Set current attribute to entry (for specified product)
      *
-     * @param Mage_Catalog_Model_Product $product
+     * @param Mage_Catalog_Model_Product             $product
      * @param Google_Service_ShoppingContent_Product $shoppingProduct
+     *
      * @return Google_Service_ShoppingContent_Product
      */
     public function convertAttribute($product, $shoppingProduct)
     {
+        $sp = $this->_dispatch('bluevisiontec_googleshoppingapi_attribute_salepriceeffectivedate', $product, $shoppingProduct);
+        if ($sp !== null) {
+            return $sp;
+        }
+
         $effectiveDateFrom = $this->getGroupAttributeSalePriceEffectiveDateFrom();
-        $fromValue = $effectiveDateFrom->getProductAttributeValue($product);
+        $fromValue         = $effectiveDateFrom->getProductAttributeValue($product);
 
         $effectiveDateTo = $this->getGroupAttributeSalePriceEffectiveDateTo();
-        $toValue = $effectiveDateTo->getProductAttributeValue($product);
+        $toValue         = $effectiveDateTo->getProductAttributeValue($product);
 
         $from = $to = null;
         if (!empty($fromValue) && Zend_Date::isDate($fromValue, Zend_Date::ATOM)) {
