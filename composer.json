@@ -1,5 +1,5 @@
 {
-	"name": "bluevisiontec/googleshoppingapi",
+	"name": "zookal/googleshoppingapiv2",
 	"description": "GoogleShopping API v2 module.",
 	"type": "magento-module",
 	"license":"OSL-3.0",

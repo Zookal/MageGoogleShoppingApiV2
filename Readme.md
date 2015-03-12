@@ -117,3 +117,6 @@ BlueVisionTec Modules -> GoogleShoppingApi
 * Attributes configuration and item management can be found in Magento Admin ->
   Catalog -> Google Content APIv2
 
+## Taxonomies
+
+https://www.google.com/basepages/producttype/taxonomy.en-US.txt
