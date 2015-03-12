@@ -1,5 +1,4 @@
 <?php
-require_once Mage::getBaseDir().'/vendor/google/apiclient/src/Google/Client.php';
 /**
  * @category	BlueVisionTec
  * @package     BlueVisionTec_GoogleShoppingApi
@@ -19,11 +18,11 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 
 	const APPNAME = 'BlueVisionTec Magento GoogleShopping';
 
-	/** 
+	/**
 	 * @var Google_Client
 	 */
     protected $_client = null;
-    /** 
+    /**
 	 * @var Google_Service_ShoppingContent
 	 */
     protected $_shoppingService = null;
@@ -37,7 +36,7 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
     {
         return Mage::getSingleton('googleshoppingapi/config');
     }
-    
+
     /**
      * Retutn Google Content Client Instance
      *
@@ -48,7 +47,7 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
      */
     public function getClient($storeId)
     {
-    
+
 		if(isset($this->_client)) {
 			if($this->_client->isAccessTokenExpired()) {
 				header('Location: ' . Mage::getUrl("adminhtml/googleShoppingApi_oauth/auth",array('store_id'=>$storeId) ));
@@ -56,30 +55,30 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 			}
 			return $this->_client;
 		}
-    
+
 		$adminSession = Mage::getSingleton('admin/session');
 
  		$accessTokens = $adminSession->getGoogleOAuth2Token();
 
  		$clientId = $this->getConfig()->getConfigData('client_id',$storeId);
 		$clientSecret = $this->getConfig()->getConfigData('client_secret',$storeId);
-		
+
 		$accessToken = $accessTokens[$clientId];
-		
+
 		if(!$clientId || !$clientSecret) {
 			Mage::getSingleton('adminhtml/session')->addError("Please specify Google Content API access data for this store!");
 			return false;
-			
+
  		}
- 		
+
 		if(!isset($accessToken) || empty($accessToken) ) {
 			header('Location: ' . Mage::getUrl("adminhtml/googleShoppingApi_oauth/auth",array('store_id'=>$storeId) ));
 			exit;
 		}
 
-		
-		
-    
+
+
+
 		$client = new Google_Client();
 		$client->setApplicationName(self::APPNAME);
 		$client->setClientId($clientId);
@@ -91,13 +90,13 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 			header('Location: ' . Mage::getUrl("adminhtml/googleShoppingApi_oauth/auth",array('store_id'=>$storeId) ));
 			exit;
 		}
-		
+
 		$this->_client = $client;
-		
+
 		return $this->_client;
-		
+
     }
-    
+
     /**
      * @return Google_Service_ShoppingContent shopping client
      */
@@ -105,14 +104,14 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 		if(isset($this->_shoppingService)) {
 			return $this->_shoppingService;
 		}
-		
+
 		$this->_shoppingService = new Google_Service_ShoppingContent($this->getClient($storeId));
 		return $this->_shoppingService;
     }
-    
+
     public function listProducts($storeId = null) {
 		$merchantId = $this->getConfig()->getConfigData('merchant_id',$storeId);
-    
+
 		return $this->getShoppingService($storeId)->products->listProducts($merchantId);
 		//$products = $this->getShoppingService($storeId)->products->listProducts($merchantId, $parameters);
 		//$products->getResources();
@@ -121,7 +120,7 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 // 			echo $product->title."<br/>";
 // 		}
     }
-    
+
     /**
      * @param string product id
      * @param integer store id
@@ -132,7 +131,7 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 		$merchantId = $this->getConfig()->getConfigData('account_id',$storeId);
 		$product = $this->getShoppingService($storeId)->products->get($merchantId,$productId);
 		return $product;
-		
+
     }
     /**
      * @param string product id
@@ -142,7 +141,7 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 		$merchantId = $this->getConfig()->getConfigData('account_id',$storeId);
 		$result = $this->getShoppingService($storeId)->products->delete($merchantId,$productId);
 		return $result;
-		
+
     }
     /**
      * @param Google_Service_ShoppingContent_Product product
@@ -157,7 +156,7 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
 		$product->setExpirationDate($expDate);
 		$result = $this->getShoppingService($storeId)->products->insert($merchantId, $product);
 		return $result;
-		
+
     }
     /**
      * @param Google_Service_ShoppingContent_Product product
@@ -168,6 +167,6 @@ class BlueVisionTec_GoogleShoppingApi_Model_GoogleShopping extends Varien_Object
     public function updateProduct($product, $storeId = null) {
 		return $this->insertProduct($product, $storeId);
     }
-    
-    
+
+
 }
