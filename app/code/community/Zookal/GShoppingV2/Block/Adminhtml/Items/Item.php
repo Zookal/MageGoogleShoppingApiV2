@@ -29,6 +29,11 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Item extends Mage_Adminhtml_Block
         $collection = Mage::getResourceModel('gshoppingv2/item_collection');
         $store      = $this->_getStore();
         $collection->addStoreFilter($store->getId());
+
+        Mage::dispatchEvent('gshoppingv2_block_adminhtml_items_item_collection', [
+            'collection' => $collection,
+        ]);
+
         $this->setCollection($collection);
         $this->setDefaultSort('expires');
         $this->setDefaultDir('ASC');
@@ -57,7 +62,9 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Item extends Mage_Adminhtml_Block
                 'width'  => '100px',
                 'index'  => 'expires',
             ]);
-
+        Mage::dispatchEvent('gshoppingv2_block_adminhtml_items_item_grid', [
+            'grid' => $this,
+        ]);
         return parent::_prepareColumns();
     }
 
@@ -94,6 +101,18 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Item extends Mage_Adminhtml_Block
     public function getGridUrl()
     {
         return $this->getUrl('*/*/grid', ['_current' => true]);
+    }
+
+    /**
+     * Disable clickable row
+     *
+     * @param $item
+     *
+     * @return bool
+     */
+    public function getRowUrl($item)
+    {
+        return false;
     }
 
     /**

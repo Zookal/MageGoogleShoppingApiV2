@@ -29,10 +29,11 @@ class Zookal_GShoppingV2_Block_Adminhtml_Captcha extends Mage_Adminhtml_Block_Te
         $confirmButton = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData([
                 'label'   => $this->__('Confirm'),
-                'onclick' => "if($('user_confirm').value != '')
-                                {
-                                    setLocation('" . $this->getUrl('*/*/confirmCaptcha', ['_current' => true]) . "' + 'user_confirm/' + $('user_confirm').value + '/');
-                                }",
+                'onclick' => "if($('user_confirm').value != '') { setLocation('" .
+                    $this->getUrl(
+                        '*/*/confirmCaptcha', ['_current' => true]
+                    ) .
+                    "' + 'user_confirm/' + $('user_confirm').value + '/'); }",
                 'class'   => 'task'
             ]);
         return $confirmButton->toHtml();

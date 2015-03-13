@@ -60,6 +60,9 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Product
         }
 
         Mage::getSingleton('catalog/product_status')->addSaleableFilterToCollection($collection);
+        Mage::dispatchEvent('gshoppingv2_block_adminhtml_items_product_collection', [
+            'collection' => $collection,
+        ]);
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -112,6 +115,7 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Product
             'index'            => 'sku',
             'column_css_class' => 'sku'
         ]);
+
         $this->addColumn('price', [
             'header'        => Mage::helper('sales')->__('Price'),
             'align'         => 'center',
@@ -120,6 +124,7 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Product
             'rate'          => $this->_getStore()->getBaseCurrency()->getRate($this->_getStore()->getDefaultCurrencyCode()),
             'index'         => 'price'
         ]);
+
         $this->addColumn('status', [
             'header'           => Mage::helper('sales')->__('Status'),
             'width'            => '80px',
@@ -130,6 +135,10 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Product
                 Mage_Catalog_Model_Product_Status::STATUS_DISABLED => Mage::helper('sales')->__('Disabled')
             ],
             'column_css_class' => 'status'
+        ]);
+
+        Mage::dispatchEvent('gshoppingv2_block_adminhtml_items_product_grid', [
+            'grid' => $this,
         ]);
 
         return parent::_prepareColumns();
@@ -160,6 +169,18 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items_Product
     public function getGridUrl()
     {
         return $this->getUrl('*/gShoppingV2_selection/grid', ['index' => $this->getIndex(), '_current' => true]);
+    }
+
+    /**
+     * Disable clickable row
+     *
+     * @param $item
+     *
+     * @return bool
+     */
+    public function getRowUrl($item)
+    {
+        return false;
     }
 
     /**

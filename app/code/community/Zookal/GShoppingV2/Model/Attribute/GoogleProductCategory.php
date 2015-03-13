@@ -30,8 +30,7 @@ class Zookal_GShoppingV2_Model_Attribute_GoogleProductCategory
         }
 
         // get category from product attribute
-        $value = $product->getResource()->getAttribute('google_shopping_category')
-            ->getFrontend()->getValue($product);
+        $value = $product->getResource()->getAttribute('google_shopping_category')->getFrontend()->getValue($product);
         $value = preg_replace('/\d+ /', '', $value);
         $shoppingProduct->setGoogleProductCategory($value);
 
