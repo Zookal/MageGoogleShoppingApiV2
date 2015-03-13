@@ -1,5 +1,7 @@
 # GoogleShoppingAPI v2
 
+Min PHP version: 5.4
+
 ## Magento Module GoogleShoppingAPI
 
 This module is based on the official Magento GoogleShopping module and enhances
@@ -31,16 +33,16 @@ version, but will be re-enabled soon.
 
 The following events will get dispatched:
 
-- `bluevisiontec_googleshoppingapi_attribute_*` please see folder: `Model/Attribute/`
+- `gshoppingv2_attribute_*` please see folder: `Model/Attribute/`
 - and more @todo
 
-To implement an observer for the events `bluevisiontec_googleshoppingapi_attribute_*`
+To implement an observer for the events `gshoppingv2_attribute_*`
 you can use this example:
 
 ```php
 
     /**
-     * @dispatch bluevisiontec_googleshoppingapi_attribute_imagelink
+     * @dispatch gshoppingv2_attribute_imagelink
      *
      * @param Varien_Event_Observer $observer
      *
@@ -96,13 +98,6 @@ following content:
 }
 ```
 
-### Install composer
-```bash
-mkdir bin
-curl -s https://getcomposer.org/installer | php -- --install-dir=bin
-php bin/composer.phar install
-```
-
 ## Configuration
 
 As the module has to use Google OAuth2 a ClientId and ClientSecret for Google
@@ -124,7 +119,7 @@ http://console.developers.google.com/
 * In the next step the shop backend data has to be enterend
   * "Authorized JavaScript origins": https://www.yourmagentobackend.com/
   * "Authorized redirect uris":
-  * https://www.yourmagentobackend.com/index.php/admin/googleShoppingApi_oauth/auth/
+  * https://www.yourmagentobackend.com/index.php/admin/gShoppingV2_oauth/auth/
 * After finishing the process you can see your API credentials
   * Client ID and Client Secret must be entered in the Magento Module Configuration
 
