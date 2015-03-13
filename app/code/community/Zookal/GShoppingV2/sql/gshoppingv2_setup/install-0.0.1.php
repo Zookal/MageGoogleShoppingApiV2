@@ -1,6 +1,6 @@
 <?php
 
-/** @var $installer Mage_Core_Model_Resource_Setup */
+/** @var $installer Zookal_GShoppingV2_Model_Resource_Setup */
 
 $installer = $this;
 
@@ -145,9 +145,7 @@ $table = $connection->newTable($this->getTable('gshoppingv2/attributes'))
 $installer->getConnection()->createTable($table);
 
 /** @var Mage_Catalog_Model_Resource_Setup $catalogSetup */
-$catalogSetup = Mage::getResourceModel('catalog/resource_setup');
-
-Zend_Debug::dump(get_class($catalogSetup));
+$catalogSetup = Mage::getResourceModel('catalog/setup','core_setup');
 
 if ($catalogSetup->getAttributeId(Mage_Catalog_Model_Product::ENTITY, 'google_shopping_image') === false) {
     $catalogSetup->addAttribute('catalog_product', 'google_shopping_image',

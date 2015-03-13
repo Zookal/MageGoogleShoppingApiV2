@@ -44,6 +44,7 @@
             <gshoppingv2_setup>
                 <setup>
                     <module>Zookal_GShoppingV2</module>
+                    <class>Zookal_GShoppingV2_Model_Resource_Setup</class>
                 </setup>
             </gshoppingv2_setup>
         </resources>
