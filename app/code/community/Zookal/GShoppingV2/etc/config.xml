@@ -107,7 +107,7 @@
             <gshoppingv2>
                 <autorenew_notlisted>1</autorenew_notlisted>
                 <autoremove_disabled>1</autoremove_disabled>
-                <target_country>DE</target_country>
+                <target_country>AU</target_country>
                 <account_type>HOSTED_OR_GOOGLE</account_type>
 
                 <!-- Available target countries. Each country must have

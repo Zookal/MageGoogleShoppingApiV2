@@ -6,16 +6,13 @@ Min PHP version: 5.4
 
 This module is based on the official Magento GoogleShopping module and enhances
 the original module features with APIv2 support (APIv1 support removed),
-OAuth2 support and serveral additional features from the original 
+OAuth2 support and several additional features from the original 
 EnhancedGoogleShopping module.
 
-If the original Magento GoogleShopping module is installed, data will be migrated.
-
-The observer (auto sync after saving product changes) is disabled in the current
-version, but will be re-enabled soon.
+Data will be migrated from Magento GoogleShopping even if Magento GoogleShopping is
+not installed.
 
 ## Features
-
 
 * update item expiration date on sync
 * option to renew not listed items on sync
@@ -152,3 +149,7 @@ BlueVisionTec Modules -> GoogleShoppingApi
 ## Taxonomies
 
 https://www.google.com/basepages/producttype/taxonomy.en-US.txt
+
+## Contribute
+
+Something missing or wrong? Open an issue or send a PR. :relaxed:

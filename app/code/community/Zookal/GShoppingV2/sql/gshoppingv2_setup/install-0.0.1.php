@@ -144,10 +144,13 @@ $table = $connection->newTable($this->getTable('gshoppingv2/attributes'))
     ->setComment('Google Content Attributes link Product Attributes');
 $installer->getConnection()->createTable($table);
 
-$catalogEavSetup         = Mage::getResourceModel('catalog/eav_mysql4_setup', 'core_setup');
-$attrGoogleShoppingImage = $catalogEavSetup->getAttributeId(Mage_Catalog_Model_Product::ENTITY, 'google_shopping_image');
-if ($attrGoogleShoppingImage === false) {
-    $catalogEavSetup->addAttribute('catalog_product', 'google_shopping_image',
+/** @var Mage_Catalog_Model_Resource_Setup $catalogSetup */
+$catalogSetup = Mage::getResourceModel('catalog/resource_setup');
+
+Zend_Debug::dump(get_class($catalogSetup));
+
+if ($catalogSetup->getAttributeId(Mage_Catalog_Model_Product::ENTITY, 'google_shopping_image') === false) {
+    $catalogSetup->addAttribute('catalog_product', 'google_shopping_image',
         [
             'group'    => 'Images',
             'type'     => 'varchar',
@@ -162,21 +165,22 @@ if ($attrGoogleShoppingImage === false) {
         ]
     );
 }
-$catalogEavSetup->addAttribute('catalog_product', 'google_shopping_category',
-    [
-        'group'        => 'Google Shopping',
-        'type'         => 'varchar',
-        'frontend'     => '',
-        'label'        => 'Google Shopping Category',
-        'input'        => 'select',
-        'global'       => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
-        'visible'      => true,
-        'default'      => '',
-        'class'        => '',
-        'source'       => 'gshoppingv2/attribute_source_googleShoppingCategories',
-        'required'     => false,
-        'user_defined' => true,
-    ]
-);
+if ($catalogSetup->getAttributeId(Mage_Catalog_Model_Product::ENTITY, 'google_shopping_category') === false) {
+    $catalogSetup->addAttribute('catalog_product', 'google_shopping_category',
+        [
+            'group'        => 'Google Shopping',
+            'type'         => 'varchar',
+            'frontend'     => '',
+            'label'        => 'Google Shopping Category',
+            'input'        => 'text',
+            'global'       => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_STORE,
+            'visible'      => true,
+            'default'      => '',
+            'class'        => '',
+            'source'       => '',
+            'required'     => false,
+            'user_defined' => true,
+        ]
+    );
+}
 $installer->endSetup();
-

@@ -29,7 +29,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TypesController extends
     /**
      * Initialize attribute set mapping object
      *
-     * @return Mage_GoogleShopping_Adminhtml_Googleshopping_TypesController
+     * @return Zookal_GShoppingV2_Model_Type
      */
     protected function _initItemType()
     {
@@ -47,8 +47,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TypesController extends
 
     /**
      * Initialize general settings for action
-     *
-     * @return  Mage_GoogleShopping_Adminhtml_Googleshopping_ItemsController
+     * @return $this
      */
     protected function _initAction()
     {
