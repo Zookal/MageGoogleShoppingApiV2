@@ -1,3 +1,4 @@
 app/code/community/Zookal/GShoppingV2 app/code/community/Zookal/GShoppingV2
 app/etc/modules/Zookal_GShoppingV2.xml app/etc/modules/Zookal_GShoppingV2.xml
 app/design/adminhtml/default/default/template/gshoppingv2 app/design/adminhtml/default/default/template/gshoppingv2
+lib/Varien/Data/Form/Element/Googleshoppingautocomplete.php lib/Varien/Data/Form/Element/Googleshoppingautocomplete.php

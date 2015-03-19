@@ -21,7 +21,7 @@ class Zookal_GShoppingV2_Model_Resource_Item_Collection extends
     /**
      * Init collection select
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Item_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
      */
     protected function _initSelect()
     {
@@ -35,7 +35,7 @@ class Zookal_GShoppingV2_Model_Resource_Item_Collection extends
      *
      * @param array|int $storeIds
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Item_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
      */
     public function addStoreFilter($storeIds)
     {
@@ -48,7 +48,7 @@ class Zookal_GShoppingV2_Model_Resource_Item_Collection extends
      *
      * @param int $productId
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Item_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
      */
     public function addProductFilterId($productId)
     {
@@ -82,7 +82,7 @@ class Zookal_GShoppingV2_Model_Resource_Item_Collection extends
     /**
      * Join product and type data
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Item_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
      */
     protected function _joinTables()
     {

@@ -22,7 +22,7 @@ class Zookal_GShoppingV2_Model_Resource_Type_Collection extends
     /**
      * Init collection select
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Type_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Type_Collection
      */
     protected function _initSelect()
     {
@@ -46,7 +46,7 @@ class Zookal_GShoppingV2_Model_Resource_Type_Collection extends
     /**
      * Add total count of Items for each type
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Type_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Type_Collection
      */
     public function addItemsCount()
     {
@@ -64,7 +64,7 @@ class Zookal_GShoppingV2_Model_Resource_Type_Collection extends
      *
      * @param string $iso Two-letter country ISO code
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Type_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Type_Collection
      */
     public function addCountryFilter($iso)
     {
@@ -75,7 +75,7 @@ class Zookal_GShoppingV2_Model_Resource_Type_Collection extends
     /**
      * Join Attribute Set data
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Type_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Type_Collection
      */
     protected function _joinAttributeSet()
     {

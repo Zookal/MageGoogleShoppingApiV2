@@ -22,7 +22,7 @@ class Zookal_GShoppingV2_Model_Resource_Item extends Mage_Core_Model_Resource_Db
      *
      * @param Zookal_GShoppingV2_Model_Item $model
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Item
+     * @return Zookal_GShoppingV2_Model_Resource_Item
      */
     public function loadByProduct($model)
     {

@@ -25,6 +25,8 @@ not installed.
 * option to add custom parameters to product link
 * adds Austria as target country
 * ability to set Google product category in Magento product details
+* backend product edit: auto complete to choose the category for google shopping. DE and EN categories names are
+  pre-installed. 
 
 ### Events
 

@@ -10,6 +10,15 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
+
+/**
+ * @method int getTypeId()
+ * @method Zookal_GShoppingV2_Model_Type setTypeId(int $value)
+ * @method int getAttributeSetId()
+ * @method Zookal_GShoppingV2_Model_Type setAttributeSetId(int $value)
+ * @method string getTargetCountry()
+ * @method Zookal_GShoppingV2_Model_Type setTargetCountry(string $value)
+ */
 class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
 {
     /**
