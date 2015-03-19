@@ -76,7 +76,7 @@ following content:
 ```json
 {
 	"require": {
-		"bluevisiontec/googleshoppingapi": "dev-master",
+		"zookal/gshoppingv2": "1.0.0",
 		"zookal/google_apiclient": "dev-master"
 	},
 	"suggest": {
@@ -144,7 +144,7 @@ http://console.developers.google.com/
     Around 6200 taxonomies for each language de_DE and en_US are shipped with the module package and loaded
     into a database table. Via backend text field you must use the autocomplete to retrieve the appropriate category.
 
-![autocomplete](https://github.com/Zookal/markdown-here/raw/master/src/common/images/icon48.png "Google Shopping autocomplete")
+![autocomplete](https://raw.githubusercontent.com/Zookal/MageGoogleShoppingApiV2/refacor/gsautocomplete.png "Google Shopping autocomplete")
 
     
 * Attributes configuration and item management can be found in Magento Admin ->
