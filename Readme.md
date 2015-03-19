@@ -124,8 +124,7 @@ http://console.developers.google.com/
 
 ### Magento Module Configuration
 
-* Basic Module configuration: Magento Admin -> System -> Configuration -> 
-BlueVisionTec Modules -> GoogleShoppingApi
+* Basic Module configuration: Magento Admin -> System -> Configuration -> Catalog -> Google Shopping V2
 
   * Account-ID: Your GoogleShopping Merchant ID
   * Google Developer Project Client ID: The Client ID generated above
@@ -139,11 +138,14 @@ BlueVisionTec Modules -> GoogleShoppingApi
   * Removes items which are disabled or out of stock from GoogleShopping
 
 * Product configuration
-  * In Product edit view you will find a new tab "GoogleShopping". 
-    Here you can set the GoogleShopping Category. 
+  * In Product edit view you will find a new tab "Google Shopping". 
+    Here you can set the Google Shopping Category. 
     The language of the category is taken from the configured store language.
-    The taxonomy files for de_DE and en_US are shipped with the module package.
-    Further taxonomy files should be added to /var/bluevisiontec/googleshoppingapi/data .
+    Around 6200 taxonomies for each language de_DE and en_US are shipped with the module package and loaded
+    into a database table. Via backend text field you must use the autocomplete to retrieve the appropriate category.
+
+![autocomplete](https://github.com/Zookal/markdown-here/raw/master/src/common/images/icon48.png "Google Shopping autocomplete")
+
     
 * Attributes configuration and item management can be found in Magento Admin ->
   Catalog -> Google Content APIv2
