@@ -43,4 +43,15 @@ class Zookal_GShoppingV2_Model_Logger extends Google_Logger_Abstract
         $this->_storeID = (int)$storeID;
         return $this;
     }
+
+    /**
+     * Runtime errors that do not require immediate action but should typically
+     * be logged and monitored.
+     *
+     * @param Exception $e
+     */
+    public function logException(Exception $e)
+    {
+        $this->log(self::ERROR, $e->__toString(), []);
+    }
 }
