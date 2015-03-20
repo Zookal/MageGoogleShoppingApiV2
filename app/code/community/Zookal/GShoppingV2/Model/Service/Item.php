@@ -67,7 +67,7 @@ class Zookal_GShoppingV2_Model_Service_Item extends Zookal_GShoppingV2_Model_Ser
     {
         $service = Mage::getModel('gshoppingv2/googleShopping');
 
-        $gItemId = $item->getGoogleShoppingItemId();
+        //$gItemId = $item->getGoogleShoppingItemId();
 
         // get product from google shopping
         //$product = $service->getProduct($gItemId,$item->getStoreId());

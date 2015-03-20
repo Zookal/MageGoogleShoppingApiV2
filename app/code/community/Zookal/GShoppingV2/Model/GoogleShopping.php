@@ -82,6 +82,10 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
             exit;
         }
 
+        if ($this->getConfig()->getIsDebug($storeId)) {
+            $client->setLogger(Mage::getModel('gshoppingv2/logger', $client)->setStoreID($storeId));
+        }
+
         $this->_client = $client;
 
         return $this->_client;
