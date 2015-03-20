@@ -110,7 +110,7 @@
                 <autoremove_disabled>1</autoremove_disabled>
                 <target_country>AU</target_country>
                 <account_type>HOSTED_OR_GOOGLE</account_type>
-
+                <log_file>gshopping_api__STORE__.log</log_file>
                 <!-- Available target countries. Each country must have
                 language code (ISO 639-1) and currency code (ISO 3166)
                 according to Google Content documentation. -->

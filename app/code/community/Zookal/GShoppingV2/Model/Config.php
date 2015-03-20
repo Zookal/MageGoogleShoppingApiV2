@@ -272,7 +272,20 @@ class Zookal_GShoppingV2_Model_Config extends Varien_Object
      */
     public function getIsDebug($storeId)
     {
-        return (bool)$this->getConfigData('debug', $storeId);
+        return (bool)$this->getConfigData('debug', (int)$storeId);
+    }
+
+    /**
+     * Check whether debug mode is enabled
+     *
+     * @param int $storeId
+     *
+     * @return bool
+     */
+    public function getLogfile($storeId)
+    {
+        $storeId = (int)$storeId;
+        return str_replace('__STORE__', $storeId, $this->getConfigData('log_file', $storeId));
     }
 
     /**

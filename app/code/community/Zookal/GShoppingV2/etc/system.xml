@@ -72,6 +72,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </debug>
+                        <log_file translate="label">
+                            <label>Logfile name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>145</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>__STORE__ will be replaced with the current store ID.</comment>
+                        </log_file>
                         <destinations translate="label">
                             <label>Destinations</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>

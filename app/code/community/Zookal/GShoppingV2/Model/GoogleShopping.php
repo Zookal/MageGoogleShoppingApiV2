@@ -110,14 +110,7 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
     public function listProducts($storeId = null)
     {
         $merchantId = $this->getConfig()->getConfigData('merchant_id', $storeId);
-
         return $this->getShoppingService($storeId)->products->listProducts($merchantId);
-        //$products = $this->getShoppingService($storeId)->products->listProducts($merchantId, $parameters);
-        //$products->getResources();
-// 		echo count($products);
-// 		foreach($products as $product) {
-// 			echo $product->title."<br/>";
-// 		}
     }
 
     /**
