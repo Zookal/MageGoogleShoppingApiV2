@@ -220,8 +220,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController extends
                 Mage::helper('gshoppingv2')->__('One or more products were not deleted from google shopping account. Refer to the log file for details.')
             );
             Mage::logException($e);
-            Mage::log($e->getMessage());
-            return;
+            return $this;
         }
         $flag->unlock();
 

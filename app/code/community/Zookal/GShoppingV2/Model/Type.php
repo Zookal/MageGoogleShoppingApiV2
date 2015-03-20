@@ -24,7 +24,7 @@ class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
     /**
      * Mapping attributes collection
      *
-     * @var Zookal_GShoppingV2_Model_Mysql4_Attribute_Collection
+     * @var Zookal_GShoppingV2_Model_Resource_Attribute_Collection
      */
     protected $_attributesCollection;
 
@@ -56,8 +56,6 @@ class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
         $attributes         = array_merge($base, $map);
 
         foreach ($attributes as $name => $attribute) {
-            Mage::log($name);
-            Mage::log(get_class($attribute));
             $attribute->convertAttribute($product, $newShoppingProduct);
         }
 
@@ -154,7 +152,7 @@ class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
     /**
      * Prepare Google Content attribute model name
      *
-     * @param string Attribute name
+     * @param string $string Attribute name
      *
      * @return string Normalized attribute name
      */
@@ -186,7 +184,6 @@ class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
             $attributeModel = Mage::getModel('gshoppingv2/attribute_default');
         }
         $attributeModel->setName($name);
-
         return $attributeModel;
     }
 
@@ -194,7 +191,7 @@ class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
      * Retrieve type's attributes collection
      * It is protected, because only Type knowns about its attributes
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Attribute_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Attribute_Collection
      */
     protected function _getAttributesCollection()
     {

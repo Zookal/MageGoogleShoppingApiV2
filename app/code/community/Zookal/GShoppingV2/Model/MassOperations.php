@@ -33,6 +33,11 @@ class Zookal_GShoppingV2_Model_MassOperations
      */
     protected $_flag;
 
+    protected function _log($message, $storeID = 0)
+    {
+        Mage::log($message, null, $this->_getConfig()->getLogfile($storeID));
+    }
+
     /**
      * Set process locking flag.
      *
@@ -92,22 +97,22 @@ class Zookal_GShoppingV2_Model_MassOperations
         }
 
         if ($totalAdded > 0) {
-            $this->_getNotifier()->addNotice(
-                Mage::helper('gshoppingv2')->__('Products were added to Google Shopping account.'),
+            $this->_getSession()->addNotice(
+                Mage::helper('gshoppingv2')->__('Products were added to Google Shopping account.') . ' ' .
                 Mage::helper('gshoppingv2')->__('Total of %d product(s) have been added to Google Content.', $totalAdded)
             );
         }
 
         if (count($errors)) {
-            $this->_getNotifier()->addMajor(
-                Mage::helper('gshoppingv2')->__('Errors happened while adding products to Google Shopping.'),
-                $errors
+            $this->_getSession()->addError(
+                Mage::helper('gshoppingv2')->__('Errors happened while adding products to Google Shopping.') . ' ' .
+                $this->_dumpVar($errors)
             );
         }
 
         if ($this->_flag->isExpired()) {
-            $this->_getNotifier()->addMajor(
-                Mage::helper('gshoppingv2')->__('Operation of adding products to Google Shopping expired.'),
+            $this->_getSession()->addError(
+                Mage::helper('gshoppingv2')->__('Operation of adding products to Google Shopping expired.') . ' ' .
                 Mage::helper('gshoppingv2')->__('Some products may have not been added to Google Shopping bacause of expiration')
             );
         }
@@ -148,7 +153,8 @@ class Zookal_GShoppingV2_Model_MassOperations
                         $item->deleteItem();
                         $item->delete();
                         $totalDeleted++;
-                        Mage::log("remove inactive: " . $item->getProduct()->getSku() . " - " . $item->getProduct()->getName());
+                        $this->_log("remove inactive: " . $item->getProduct()->getSku() . " - " .
+                            $item->getProduct()->getName(),$item->getStoreId());
                     } else {
                         $item->updateItem();
                         $item->save();
@@ -169,15 +175,15 @@ class Zookal_GShoppingV2_Model_MassOperations
             return $this;
         }
 
-        $this->_getNotifier()->addNotice(
-            Mage::helper('gshoppingv2')->__('Product synchronization with Google Shopping completed'),
+        $this->_getSession()->addNotice(
+            Mage::helper('gshoppingv2')->__('Product synchronization with Google Shopping completed') . ' ' .
             Mage::helper('gshoppingv2')->__('Total of %d items(s) have been deleted; total of %d items(s) have been updated.', $totalDeleted, $totalUpdated)
         );
         if ($totalFailed > 0 || count($errors)) {
             array_unshift($errors, Mage::helper('gshoppingv2')->__("Cannot update %s items.", $totalFailed));
-            $this->_getNotifier()->addMajor(
-                Mage::helper('gshoppingv2')->__('Errors happened during synchronization with Google Shopping'),
-                $errors
+            $this->_getSession()->addError(
+                Mage::helper('gshoppingv2')->__('Errors happened during synchronization with Google Shopping') . ' ' .
+                $this->_dumpVar($errors)
             );
         }
 
@@ -218,15 +224,15 @@ class Zookal_GShoppingV2_Model_MassOperations
         }
 
         if ($totalDeleted > 0) {
-            $this->_getNotifier()->addNotice(
-                Mage::helper('gshoppingv2')->__('Google Shopping item removal process succeded'),
+            $this->_getSession()->addNotice(
+                Mage::helper('gshoppingv2')->__('Google Shopping item removal process succeded') . ' ' .
                 Mage::helper('gshoppingv2')->__('Total of %d items(s) have been removed from Google Shopping.', $totalDeleted)
             );
         }
         if (count($errors)) {
-            $this->_getNotifier()->addMajor(
-                Mage::helper('gshoppingv2')->__('Errors happened while deleting items from Google Shopping'),
-                $errors
+            $this->_getSession()->addError(
+                Mage::helper('gshoppingv2')->__('Errors happened while deleting items from Google Shopping') . ' ' .
+                $this->_dumpVar($errors)
             );
         }
 
@@ -265,23 +271,13 @@ class Zookal_GShoppingV2_Model_MassOperations
     }
 
     /**
-     * Retrieve admin notifier
-     *
-     * @return Mage_Adminhtml_Model_Inbox
-     */
-    protected function _getNotifier()
-    {
-        return Mage::getModel('adminnotification/inbox');
-    }
-
-    /**
      * Provides general error information
      */
     protected function _addGeneralError()
     {
         if (!$this->_hasError) {
-            $this->_getNotifier()->addMajor(
-                Mage::helper('gshoppingv2')->__('Google Shopping Error'),
+            $this->_getSession()->addError(
+                Mage::helper('gshoppingv2')->__('Google Shopping Error') . ' ' .
                 Mage::helper('gshoppingv2/category')->getMessage()
             );
             $this->_hasError = true;
@@ -291,10 +287,20 @@ class Zookal_GShoppingV2_Model_MassOperations
     /**
      * Get Google Shopping config model
      *
-     * @return Mage_GoogleShopping_Model_Config
+     * @return Zookal_GShoppingV2_Model_Config
      */
     protected function _getConfig()
     {
         return Mage::getSingleton('gshoppingv2/config');
+    }
+
+    /**
+     * @param $errors
+     *
+     * @return string
+     */
+    protected function _dumpVar($errors)
+    {
+        return htmlspecialchars(var_export($errors, 1));
     }
 }
