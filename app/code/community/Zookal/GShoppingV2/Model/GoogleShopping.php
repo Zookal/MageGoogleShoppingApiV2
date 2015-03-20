@@ -56,7 +56,7 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
         $accessTokens = $adminSession->getGoogleOAuth2Token();
 
         $clientId     = $this->getConfig()->getConfigData('client_id', $storeId);
-        $clientSecret = $this->getConfig()->getConfigData('client_secret', $storeId);
+        $clientSecret = $this->getConfig()->getClientSecret($storeId);
 
         $accessToken = $accessTokens[$clientId];
 

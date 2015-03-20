@@ -73,6 +73,18 @@ class Zookal_GShoppingV2_Model_Config extends Varien_Object
     }
 
     /**
+     * Google Client Secret
+     *
+     * @param int $storeId
+     *
+     * @return string
+     */
+    public function getClientSecret($storeId = null)
+    {
+        return Mage::helper('core')->decrypt($this->getConfigData('client_secret', $storeId));
+    }
+
+    /**
      * Google Account type
      *
      * @param int $storeId

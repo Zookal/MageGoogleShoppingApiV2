@@ -27,6 +27,7 @@ not installed.
 * ability to set Google product category in Magento product details
 * backend product edit: auto complete to choose the category for google shopping. DE and EN categories names are
   pre-installed. 
+* Debug logging
 
 ### Events
 

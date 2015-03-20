@@ -68,11 +68,11 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_OauthController extends
         }
 
         $clientId     = $this->getConfig()->getConfigData('client_id', $storeId);
-        $clientSecret = $this->getConfig()->getConfigData('client_secret', $storeId);
+        $clientSecret = $this->getConfig()->getClientSecret($storeId);
 
         $adminSession = Mage::getSingleton('admin/session');
         //$service      = Mage::getModel('gshoppingv2/googleShopping');
-        $client       = new Google_Client();
+        $client = new Google_Client();
         $client->setApplicationName(Zookal_GShoppingV2_Model_GoogleShopping::APPNAME);
         $client->setClientId($clientId);
         $client->setClientSecret($clientSecret);
