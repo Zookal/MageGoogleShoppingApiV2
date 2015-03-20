@@ -10,6 +10,23 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
+
+/**
+ * @method int getItemId()
+ * @method Zookal_GShoppingV2_Model_Item setItemId(int $value)
+ * @method int getTypeId()
+ * @method Zookal_GShoppingV2_Model_Item setTypeId(int $value)
+ * @method int getProductId()
+ * @method Zookal_GShoppingV2_Model_Item setProductId(int $value)
+ * @method string getGcontentItemId()
+ * @method Zookal_GShoppingV2_Model_Item setGcontentItemId(string $value)
+ * @method int getStoreId()
+ * @method Zookal_GShoppingV2_Model_Item setStoreId(int $value)
+ * @method string getPublished()
+ * @method Zookal_GShoppingV2_Model_Item setPublished(string $value)
+ * @method string getExpires()
+ * @method Zookal_GShoppingV2_Model_Item setExpires(string $value)
+ */
 class Zookal_GShoppingV2_Model_Item extends Mage_Core_Model_Abstract
 {
     /**

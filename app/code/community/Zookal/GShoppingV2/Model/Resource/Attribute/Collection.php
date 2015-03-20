@@ -31,7 +31,7 @@ class Zookal_GShoppingV2_Model_Resource_Attribute_Collection extends
      * @param int    $attributeSetId
      * @param string $targetCountry two words ISO format
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Attribute_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Attribute_Collection
      */
     public function addAttributeSetFilter($attributeSetId, $targetCountry)
     {
@@ -48,7 +48,7 @@ class Zookal_GShoppingV2_Model_Resource_Attribute_Collection extends
      *
      * @param int $type_id
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Attribute_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Attribute_Collection
      */
     public function addTypeFilter($type_id)
     {
@@ -62,7 +62,7 @@ class Zookal_GShoppingV2_Model_Resource_Attribute_Collection extends
      * @param bool $printQuery
      * @param bool $logQuery
      *
-     * @return  Zookal_GShoppingV2_Model_Mysql4_Attribute_Collection
+     * @return  Zookal_GShoppingV2_Model_Resource_Attribute_Collection
      */
     public function load($printQuery = false, $logQuery = false)
     {
@@ -79,7 +79,7 @@ class Zookal_GShoppingV2_Model_Resource_Attribute_Collection extends
     /**
      * Join attribute sets data to select
      *
-     * @return  Zookal_GShoppingV2_Model_Mysql4_Attribute_Collection
+     * @return  Zookal_GShoppingV2_Model_Resource_Attribute_Collection
      */
     protected function _joinAttributeSet()
     {

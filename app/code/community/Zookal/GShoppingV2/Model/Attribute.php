@@ -10,6 +10,17 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
+
+/**
+ * @method int getId()
+ * @method Zookal_GShoppingV2_Model_Attribute setId(int $value)
+ * @method int getAttributeId()
+ * @method Zookal_GShoppingV2_Model_Attribute setAttributeId(int $value)
+ * @method string getGcontentAttribute()
+ * @method Zookal_GShoppingV2_Model_Attribute setGcontentAttribute(string $value)
+ * @method int getTypeId()
+ * @method Zookal_GShoppingV2_Model_Attribute setTypeId(int $value)
+ */
 class Zookal_GShoppingV2_Model_Attribute extends Mage_Core_Model_Abstract
 {
     /**
@@ -84,7 +95,6 @@ class Zookal_GShoppingV2_Model_Attribute extends Mage_Core_Model_Abstract
      * Check if attribute allowed
      *
      * @param Mage_Eav_Model_Entity_Attribute_Abstract $attribute
-     * @param array                                    $attributes
      *
      * @return boolean
      */

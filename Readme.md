@@ -25,6 +25,8 @@ not installed.
 * option to add custom parameters to product link
 * adds Austria as target country
 * ability to set Google product category in Magento product details
+* backend product edit: auto complete to choose the category for google shopping. DE and EN categories names are
+  pre-installed. 
 
 ### Events
 
@@ -74,7 +76,7 @@ following content:
 ```json
 {
 	"require": {
-		"bluevisiontec/googleshoppingapi": "dev-master",
+		"zookal/gshoppingv2": "1.0.0",
 		"zookal/google_apiclient": "dev-master"
 	},
 	"suggest": {
@@ -122,8 +124,7 @@ http://console.developers.google.com/
 
 ### Magento Module Configuration
 
-* Basic Module configuration: Magento Admin -> System -> Configuration -> 
-BlueVisionTec Modules -> GoogleShoppingApi
+* Basic Module configuration: Magento Admin -> System -> Configuration -> Catalog -> Google Shopping V2
 
   * Account-ID: Your GoogleShopping Merchant ID
   * Google Developer Project Client ID: The Client ID generated above
@@ -137,11 +138,14 @@ BlueVisionTec Modules -> GoogleShoppingApi
   * Removes items which are disabled or out of stock from GoogleShopping
 
 * Product configuration
-  * In Product edit view you will find a new tab "GoogleShopping". 
-    Here you can set the GoogleShopping Category. 
+  * In Product edit view you will find a new tab "Google Shopping". 
+    Here you can set the Google Shopping Category. 
     The language of the category is taken from the configured store language.
-    The taxonomy files for de_DE and en_US are shipped with the module package.
-    Further taxonomy files should be added to /var/bluevisiontec/googleshoppingapi/data .
+    Around 6200 taxonomies for each language de_DE and en_US are shipped with the module package and loaded
+    into a database table. Via backend text field you must use the autocomplete to retrieve the appropriate category.
+
+![autocomplete](https://raw.githubusercontent.com/Zookal/MageGoogleShoppingApiV2/refacor/gsautocomplete.png "Google Shopping autocomplete")
+
     
 * Attributes configuration and item management can be found in Magento Admin ->
   Catalog -> Google Content APIv2

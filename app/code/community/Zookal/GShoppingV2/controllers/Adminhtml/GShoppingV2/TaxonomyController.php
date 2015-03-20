@@ -15,7 +15,7 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Zookal_GShoppingV2_Adminhtml_GShoppingV2_SelectionController
+class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TaxonomyController
     extends Mage_Adminhtml_Controller_Action
 {
     const MIN_LENGTH = 3;
@@ -25,22 +25,23 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_SelectionController
      */
     public function searchAction()
     {
-        $q = $this->getRequest()->getParam('q', '');
+        $q = $this->getRequest()->getParam('query', '');
         if (strlen($q) < self::MIN_LENGTH) {
             $this->getResponse()->setBody('');
             $this->getResponse()->sendResponse();
             return;
         }
 
+        /** @var Zookal_GShoppingV2_Model_Resource_Taxonomy_Collection $taxonomyResults */
         $taxonomyResults = Mage::getModel('gshoppingv2/taxonomy')->getCollection();
-        $taxonomyResults->addFieldToFilter('name', ['like' => '%' . $q . '%']);
+        $taxonomyResults
+            ->addLocaleFilter((int)$this->getRequest()->getParam('store', 0))
+            ->searchByName($q);
 
-        $this->getResponse()->setBody(
-            $this->getLayout()
-                ->createBlock('gshoppingv2/adminhtml_items_product')
-                ->setIndex($this->getRequest()->getParam('index'))
-                ->setFirstShow(true)
-                ->toHtml()
-        );
+        $block = $this->getLayout()->createBlock('adminhtml/template')
+            ->setTemplate('gshoppingv2/autocomplete.phtml')
+            ->assign('items', $taxonomyResults);
+
+        $this->getResponse()->setBody($block->toHtml());
     }
 }
