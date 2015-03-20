@@ -230,6 +230,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController extends
     }
 
     /**
+     * @todo check if captcha is still available ... should be gone ...
      * Confirm CAPTCHA
      */
     public function confirmCaptchaAction()
@@ -237,6 +238,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController extends
 
         $storeId = $this->_getStore()->getId();
         try {
+            // @SchumacherFM @todo this should be a bug and not sure if captcha is still available
             Mage::getModel('gshoppingv2/service')->getClient(
                 $storeId,
                 Mage::helper('core')->urlDecode($this->getRequest()->getParam('captcha_token')),

@@ -10,6 +10,12 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
+
+/**
+ * @todo SchumacherFM this class should be useless
+ *
+ * Class Zookal_GShoppingV2_Model_Service
+ */
 class Zookal_GShoppingV2_Model_Service extends Varien_Object
 {
 
