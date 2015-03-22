@@ -34,8 +34,22 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
     }
 
     /**
-     * Return Google Content Client Instance
+     * @param int $storeId
      *
+     * @return bool
+     */
+    private function _getAccessToken($storeId)
+    {
+        $clientId     = $this->getConfig()->getConfigData('client_id', $storeId);
+        $accessTokens = Mage::getSingleton('admin/session')->getGoogleOAuth2Token();
+        return isset($accessTokens[$clientId]) && false === empty($accessTokens[$clientId])
+            ? $accessTokens[$clientId]
+            : false;
+    }
+
+    /**
+     * Return Google Content Client Instance
+     * @todo remove header/exit and implement exception
      * @param $storeId
      *
      * @return bool|Google_Client
@@ -50,15 +64,9 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
             }
             return $this->_client;
         }
-
-        $adminSession = Mage::getSingleton('admin/session');
-
-        $accessTokens = $adminSession->getGoogleOAuth2Token();
-
         $clientId     = $this->getConfig()->getConfigData('client_id', $storeId);
         $clientSecret = $this->getConfig()->getClientSecret($storeId);
-
-        $accessToken = $accessTokens[$clientId];
+        $accessToken  = $this->_getAccessToken($storeId);
 
         if (!$clientId || !$clientSecret) {
             Mage::getSingleton('adminhtml/session')->addError("Please specify Google Content API access data for this store!");
@@ -98,7 +106,7 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
      */
     public function getShoppingService($storeId = null)
     {
-        if (isset($this->_shoppingService)) {
+        if (null !== $this->_shoppingService) {
             return $this->_shoppingService;
         }
 
@@ -133,7 +141,7 @@ class Zookal_GShoppingV2_Model_GoogleShopping extends Varien_Object
      * @param string   $productId
      * @param null|int $storeId
      *
-     * @return expected_class|Google_Http_Request
+     * @return Google_Http_Request
      */
     public function deleteProduct($productId, $storeId = null)
     {
