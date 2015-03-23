@@ -44,19 +44,6 @@ class Zookal_GShoppingV2_Block_Adminhtml_Items extends Mage_Adminhtml_Block_Widg
     }
 
     /**
-     * Get HTML code for CAPTCHA
-     *
-     * @return string
-     */
-    public function getCaptchaHtml()
-    {
-        return $this->getLayout()->createBlock('gshoppingv2/adminhtml_captcha')
-            ->setGcontentCaptchaToken($this->getGcontentCaptchaToken())
-            ->setGcontentCaptchaUrl($this->getGcontentCaptchaUrl())
-            ->toHtml();
-    }
-
-    /**
      * Get selecetd store
      *
      * @return Mage_Core_Model_Store

@@ -27,7 +27,7 @@ class Zookal_GShoppingV2_Model_Observer
         try {
             Mage::getModel('gshoppingv2/massOperations')
                 ->synchronizeItems($items);
-        } catch (Zend_Gdata_App_CaptchaRequiredException $e) {
+        } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')
                 ->addError('Cannot update Google Content Item. Google requires CAPTCHA.');
         }
@@ -50,7 +50,7 @@ class Zookal_GShoppingV2_Model_Observer
         try {
             Mage::getModel('gshoppingv2/massOperations')
                 ->deleteItems($items);
-        } catch (Zend_Gdata_App_CaptchaRequiredException $e) {
+        } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')
                 ->addError('Cannot delete Google Content Item. Google requires CAPTCHA.');
         }
@@ -63,7 +63,7 @@ class Zookal_GShoppingV2_Model_Observer
      *
      * @param Mage_Catalog_Model_Product $product
      *
-     * @return Zookal_GShoppingV2_Model_Mysql4_Item_Collection
+     * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
      */
     protected function _getItemsCollection($product)
     {

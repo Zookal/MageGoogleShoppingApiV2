@@ -51,15 +51,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
 
         $contentBlock = $this->getLayout()->createBlock('gshoppingv2/adminhtml_items')->setStore($this->_getStore());
 
-        if ($this->getRequest()->getParam('captcha_token') && $this->getRequest()->getParam('captcha_url')) {
-            $contentBlock->setGcontentCaptchaToken(
-                Mage::helper('core')->urlDecode($this->getRequest()->getParam('captcha_token'))
-            );
-            $contentBlock->setGcontentCaptchaUrl(
-                Mage::helper('core')->urlDecode($this->getRequest()->getParam('captcha_url'))
-            );
-        }
-
         if (!$this->_getConfig()->isValidDefaultCurrencyCode($this->_getStore()->getId())) {
             $_countryInfo = $this->_getConfig()->getTargetCountryInfo($this->_getStore()->getId());
             $this->_getSession()->addNotice(
@@ -154,10 +145,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
             return;
         }
 
-        session_write_close();
-        ignore_user_abort(true);
-        set_time_limit(0);
-
         $itemIds = $this->getRequest()->getParam('item');
 
         try {
@@ -165,12 +152,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
             Mage::getModel('gshoppingv2/massOperations')
                 ->setFlag($flag)
                 ->deleteItems($itemIds);
-        } catch (Zend_Gdata_App_CaptchaRequiredException $e) {
-            // Google requires CAPTCHA for login
-            $this->_getSession()->addError(Mage::helper('gshoppingv2')->__($e->getMessage()));
-            $flag->unlock();
-            $this->_redirectToCaptcha($e);
-            return;
         } catch (Exception $e) {
             $flag->unlock();
             Mage::getModel('adminnotification/inbox')->addMajor(
@@ -228,38 +209,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
     }
 
     /**
-     * @todo check if captcha is still available ... should be gone ...
-     * Confirm CAPTCHA
-     */
-    public function confirmCaptchaAction()
-    {
-
-        $storeId = $this->_getStore()->getId();
-        try {
-            // @SchumacherFM @todo this should be a bug and not sure if captcha is still available
-            Mage::getModel('gshoppingv2/service')->getClient(
-                $storeId,
-                Mage::helper('core')->urlDecode($this->getRequest()->getParam('captcha_token')),
-                $this->getRequest()->getParam('user_confirm')
-            );
-            $this->_getSession()->addSuccess($this->__('Captcha has been confirmed.'));
-        } catch (Zend_Gdata_App_CaptchaRequiredException $e) {
-            $this->_getSession()->addError($this->__('Captcha confirmation error: %s', $e->getMessage()));
-            $this->_redirectToCaptcha($e);
-            return;
-        } catch (Zend_Gdata_App_Exception $e) {
-            $this->_getSession()->addError(
-                Mage::helper('gshoppingv2')->parseGdataExceptionMessage($e->getMessage())
-            );
-        } catch (Exception $e) {
-            Mage::logException($e);
-            $this->_getSession()->addError($this->__('Captcha confirmation error.'));
-        }
-
-        $this->_redirect('*/*/index', ['store' => $storeId]);
-    }
-
-    /**
      * Retrieve background process status
      *
      * @return Zend_Controller_Response_Abstract
@@ -272,29 +221,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
                 'is_running' => $this->_getFlag()->isLocked()
             ];
             return $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($params));
-        }
-    }
-
-    /**
-     * Redirect user to Google Captcha challenge
-     *
-     * @param Zend_Gdata_App_CaptchaRequiredException $e
-     */
-    protected function _redirectToCaptcha($e)
-    {
-        $redirectUrl = $this->getUrl(
-            '*/*/index',
-            [
-                'store'         => $this->_getStore()->getId(),
-                'captcha_token' => Mage::helper('core')->urlEncode($e->getCaptchaToken()),
-                'captcha_url'   => Mage::helper('core')->urlEncode($e->getCaptchaUrl())
-            ]
-        );
-        if ($this->getRequest()->isAjax()) {
-            $this->getResponse()->setHeader('Content-Type', 'application/json')
-                ->setBody(Mage::helper('core')->jsonEncode(['redirect' => $redirectUrl]));
-        } else {
-            $this->_redirect($redirectUrl);
         }
     }
 

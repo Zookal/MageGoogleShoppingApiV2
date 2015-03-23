@@ -10,23 +10,8 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Zookal_GShoppingV2_Model_Service_Item extends Zookal_GShoppingV2_Model_Service
+class Zookal_GShoppingV2_Model_Service_Item extends Varien_Object
 {
-    /**
-     * Return Store level Service Instance
-     *
-     * @param int $storeId
-     *
-     * @return Zookal_GShoppingV2_Model_GoogleShopping
-     */
-    public function getService($storeId = null)
-    {
-        if ($storeId === null) {
-            $storeId = $this->getStoreId();
-        }
-        return parent::getService($storeId);
-    }
-
     /**
      * Insert Item into Google Content
      *
@@ -36,12 +21,9 @@ class Zookal_GShoppingV2_Model_Service_Item extends Zookal_GShoppingV2_Model_Ser
      */
     public function insert($item)
     {
-
-        $service = Mage::getModel('gshoppingv2/googleShopping');
-
         $product = $item->getType()->convertAttributes($item->getProduct());
 
-        $shoppingProduct = $service->insertProduct($product, $item->getStoreId());
+        $shoppingProduct = Mage::getSingleton('gshoppingv2/googleShopping')->insertProduct($product, $item->getStoreId());
         $published       = now();
 
         $item->setGcontentItemId($shoppingProduct->getId())
@@ -65,7 +47,6 @@ class Zookal_GShoppingV2_Model_Service_Item extends Zookal_GShoppingV2_Model_Ser
      */
     public function update($item)
     {
-        $service = Mage::getModel('gshoppingv2/googleShopping');
 
         //$gItemId = $item->getGoogleShoppingItemId();
 
@@ -74,7 +55,7 @@ class Zookal_GShoppingV2_Model_Service_Item extends Zookal_GShoppingV2_Model_Ser
 
         $product = $item->getType()->convertAttributes($item->getProduct());
 
-        $shoppingProduct = $service->updateProduct($product, $item->getStoreId());
+        $shoppingProduct = Mage::getSingleton('gshoppingv2/googleShopping')->updateProduct($product, $item->getStoreId());
 
         $expires = $shoppingProduct->getExpirationDate();
 
@@ -96,9 +77,7 @@ class Zookal_GShoppingV2_Model_Service_Item extends Zookal_GShoppingV2_Model_Ser
     public function delete($item)
     {
         $gItemId = $item->getGoogleShoppingItemId();
-        $service = Mage::getModel('gshoppingv2/googleShopping');
-        $service->deleteProduct($gItemId, $item->getStoreId());
-
+        Mage::getSingleton('gshoppingv2/googleShopping')->deleteProduct($gItemId, $item->getStoreId());
         return $this;
     }
 

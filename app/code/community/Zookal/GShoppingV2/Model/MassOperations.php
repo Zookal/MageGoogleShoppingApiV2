@@ -57,7 +57,6 @@ class Zookal_GShoppingV2_Model_MassOperations
      * @param array $productIds
      * @param int   $storeId
      *
-     * @throws Zend_Gdata_App_CaptchaRequiredException
      * @throws Mage_Core_Exception
      * @return Zookal_GShoppingV2_Model_MassOperations
      */
@@ -125,7 +124,6 @@ class Zookal_GShoppingV2_Model_MassOperations
      *
      * @param array|Zookal_GShoppingV2_Model_Resource_Item_Collection $items
      *
-     * @throws Zend_Gdata_App_CaptchaRequiredException
      * @throws Mage_Core_Exception
      * @return Zookal_GShoppingV2_Model_MassOperations
      */
@@ -154,7 +152,7 @@ class Zookal_GShoppingV2_Model_MassOperations
                         $item->delete();
                         $totalDeleted++;
                         $this->_log("remove inactive: " . $item->getProduct()->getSku() . " - " .
-                            $item->getProduct()->getName(),$item->getStoreId());
+                            $item->getProduct()->getName(), $item->getStoreId());
                     } else {
                         $item->updateItem();
                         $item->save();
@@ -202,11 +200,13 @@ class Zookal_GShoppingV2_Model_MassOperations
         $totalDeleted    = 0;
         $itemsCollection = $this->_getItemsCollection($items);
         $errors          = [];
+
         if ($itemsCollection) {
             if (count($itemsCollection) < 1) {
                 return $this;
             }
             foreach ($itemsCollection as $item) {
+                /** @var $item Zookal_GShoppingV2_Model_Item */
                 if ($this->_flag && $this->_flag->isExpired()) {
                     break;
                 }
@@ -214,9 +214,20 @@ class Zookal_GShoppingV2_Model_MassOperations
                     $item->deleteItem()->delete();
                     // The item was removed successfully
                     $totalDeleted++;
+                } catch (Google_Service_Exception $e) {
+                    Mage::logException($e);
+                    $errors[] = Mage::helper('gshoppingv2')->__(
+                        'The item "%s" hasn\'t been deleted: %s',
+                        $item->getProduct()->getName(),
+                        $e->getMessage()
+                    );
                 } catch (Exception $e) {
                     Mage::logException($e);
-                    $errors[] = Mage::helper('gshoppingv2')->__('The item "%s" hasn\'t been deleted.', $item->getProduct()->getName());
+                    $errors[] = Mage::helper('gshoppingv2')->__(
+                        'Item "%s" with weird error: %s',
+                        $item->getProduct()->getName(),
+                        $e->getMessage()
+                    );
                 }
             }
         } else {
@@ -249,15 +260,13 @@ class Zookal_GShoppingV2_Model_MassOperations
      */
     protected function _getItemsCollection($items)
     {
-        $itemsCollection = null;
         if ($items instanceof Zookal_GShoppingV2_Model_Resource_Item_Collection) {
-            $itemsCollection = $items;
-        } else if (is_array($items)) {
-            $itemsCollection = Mage::getResourceModel('gshoppingv2/item_collection')
+            return $items;
+        } elseif (is_array($items)) {
+            return Mage::getResourceModel('gshoppingv2/item_collection')
                 ->addFieldToFilter('item_id', $items);
         }
-
-        return $itemsCollection;
+        return null;
     }
 
     /**
