@@ -15,18 +15,21 @@ class Zookal_GShoppingV2_Model_Observer
     /**
      * Update product item in Google Content
      *
+     * @dispatch catalog_product_save_after
+     *
      * @param Varien_Object $observer
      *
      * @return Zookal_GShoppingV2_Model_Observer
      */
     public function saveProductItem($observer)
     {
+        /** @var Mage_Catalog_Model_Product $product */
         $product = $observer->getEvent()->getProduct();
-        $items   = $this->_getItemsCollection($product);
+        /** @var Zookal_GShoppingV2_Model_Resource_Item_Collection $items */
+        $items = $this->_getItemsCollection($product);
 
         try {
-            Mage::getModel('gshoppingv2/massOperations')
-                ->synchronizeItems($items);
+            Mage::getModel('gshoppingv2/massOperations')->synchronizeItems($items);
         } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')
                 ->addError('Cannot update Google Content Item. Google requires CAPTCHA.');
@@ -37,6 +40,7 @@ class Zookal_GShoppingV2_Model_Observer
 
     /**
      * Delete product item from Google Content
+     * @dispatch catalog_product_delete_before
      *
      * @param Varien_Object $observer
      *
@@ -48,8 +52,7 @@ class Zookal_GShoppingV2_Model_Observer
         $items   = $this->_getItemsCollection($product);
 
         try {
-            Mage::getModel('gshoppingv2/massOperations')
-                ->deleteItems($items);
+            Mage::getModel('gshoppingv2/massOperations')->deleteItems($items);
         } catch (Exception $e) {
             Mage::getSingleton('adminhtml/session')
                 ->addError('Cannot delete Google Content Item. Google requires CAPTCHA.');
@@ -65,7 +68,7 @@ class Zookal_GShoppingV2_Model_Observer
      *
      * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
      */
-    protected function _getItemsCollection($product)
+    protected function XXX_getItemsCollection($product)
     {
         $items = Mage::getResourceModel('gshoppingv2/item_collection')
             ->addProductFilterId($product->getId());
@@ -77,6 +80,42 @@ class Zookal_GShoppingV2_Model_Observer
             if (!Mage::getStoreConfigFlag('google/gshoppingv2/observed', $item->getStoreId())) {
                 $items->removeItemByKey($item->getId());
             }
+        }
+
+        return $items;
+    }
+
+    /**
+     * Get items which are available for update/delete when product is saved
+     *
+     * @param Mage_Catalog_Model_Product $product
+     *
+     * @return Zookal_GShoppingV2_Model_Resource_Item_Collection
+     */
+    protected function _getItemsCollection(Mage_Catalog_Model_Product $product)
+    {
+        $items = Mage::getResourceModel('gshoppingv2/item_collection')
+            ->addProductFilterId($product->getId());
+        if ($product->getStoreId()) {
+            $items->addStoreFilter($product->getStoreId());
+        }
+
+        $clientAuthenticated = true;
+        foreach ($items as $item) {
+            if (!Mage::getStoreConfigFlag('catalog/gshoppingv2/observed', $item->getStoreId())) {
+                $items->removeItemByKey($item->getId());
+            } else {
+                if (Mage::getSingleton('gshoppingv2/googleShopping')->isAuthenticated($item->getStoreId())) {
+                    $items->removeItemByKey($item->getId());
+                } else {
+                    $clientAuthenticated = false;
+                }
+            }
+        }
+        if (false === $clientAuthenticated) {
+            Mage::getSingleton('adminhtml/session')->addWarning(
+                Mage::helper('gshoppingv2')->__('Product was not updated on GoogleShopping for at least one store. Please authenticate and save the product again or update manually.')
+            );
         }
 
         return $items;

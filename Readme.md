@@ -12,6 +12,15 @@ EnhancedGoogleShopping module.
 Data will be migrated from Magento GoogleShopping even if Magento GoogleShopping is
 not installed.
 
+The observer was re-enabled with version 0.1.0 . To prevent problems when users
+are editing products which have no access to GoogleShopping through OAuth2, products
+are only updated on GoogleShopping if a valid access token for the store exists.
+
+To authenticate and get an access token go to Magento Admin -> Catalog -> Google 
+Content APIv2 and select the store view in which you want to authenticate. 
+After selecting a store view without valid access token you will be automatically
+redirected to OAuth2 authentication.
+
 ## Features
 
 * update item expiration date on sync
@@ -28,6 +37,7 @@ not installed.
 * backend product edit: auto complete to choose the category for google shopping. DE and EN categories names are
   pre-installed. 
 * Debug logging
+* Further refactorings
 
 ### Events
 
@@ -151,6 +161,22 @@ http://console.developers.google.com/
 * Attributes configuration and item management can be found in Magento Admin ->
   Catalog -> Google Content APIv2
 
+* Before uploading an item you will have to set the attribute mapping
+	* Magento Admin -> Catalog -> Google Content API V2 -> Manage attributes
+	* See https://support.google.com/merchants/answer/1344057 for requirements
+	* Example for default attribute set
+		* SKU => Manufacturer's Part Number (MPN)
+		* Condition => Condition
+			* You might have to add the attribute condition as DropDown with the Options new, refurbished, used
+		* Name => Title
+		* Description => Description
+		* Price => Price 
+			* Sales price is taken if set
+		* EAN13 => GTIN
+			* You need 2 out of 3 (MPN, GTIN, Brand), so you might add a similar attribute
+		* Manufacturer => Brand
+		
+![GoogleShoppingAPI attribute mapping](docs/images/attribute-mapping.png)
 ## Taxonomies
 
 https://www.google.com/basepages/producttype/taxonomy.en-US.txt

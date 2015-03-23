@@ -136,41 +136,38 @@ class Zookal_GShoppingV2_Model_MassOperations
 
         $itemsCollection = $this->_getItemsCollection($items);
 
-        if ($itemsCollection) {
-            if (count($itemsCollection) < 1) {
-                return $this;
-            }
-            foreach ($itemsCollection as $item) {
-                if ($this->_flag && $this->_flag->isExpired()) {
-                    break;
-                }
-                $removeInactive = $this->_getConfig()->getConfigData('autoremove_disabled', $item->getStoreId());
-                $renewNotListed = $this->_getConfig()->getConfigData('autorenew_notlisted', $item->getStoreId());
-                try {
-                    if ($removeInactive && ($item->getProduct()->isDisabled() || !$item->getProduct()->getStockItem()->getIsInStock())) {
-                        $item->deleteItem();
-                        $item->delete();
-                        $totalDeleted++;
-                        $this->_log("remove inactive: " . $item->getProduct()->getSku() . " - " .
-                            $item->getProduct()->getName(), $item->getStoreId());
-                    } else {
-                        $item->updateItem();
-                        $item->save();
-                        // The item was updated successfully
-                        $totalUpdated++;
-                    }
-                } catch (Mage_Core_Exception $e) {
-                    $errors[] = Mage::helper('gshoppingv2')->__('The item "%s" cannot be updated at Google Content. %s', $item->getProduct()->getName(), $e->getMessage());
-                    $totalFailed++;
-                } catch (Exception $e) {
-                    Mage::logException($e);
-                    $errors[] = Mage::helper('gshoppingv2')->__('The item "%s" hasn\'t been updated.', $item->getProduct()->getName());
-                    $errors[] = $e->getMessage();
-                    $totalFailed++;
-                }
-            }
-        } else {
+        if (!$itemsCollection || count($itemsCollection) < 1) {
             return $this;
+        }
+
+        foreach ($itemsCollection as $item) {
+            if ($this->_flag && $this->_flag->isExpired()) {
+                break;
+            }
+            $removeInactive = $this->_getConfig()->getConfigData('autoremove_disabled', $item->getStoreId());
+            //$renewNotListed = $this->_getConfig()->getConfigData('autorenew_notlisted', $item->getStoreId());
+            try {
+                if ($removeInactive && ($item->getProduct()->isDisabled() || !$item->getProduct()->getStockItem()->getIsInStock())) {
+                    $item->deleteItem();
+                    $item->delete();
+                    $totalDeleted++;
+                    $this->_log("remove inactive: " . $item->getProduct()->getSku() . " - " .
+                        $item->getProduct()->getName(), $item->getStoreId());
+                } else {
+                    $item->updateItem();
+                    $item->save();
+                    // The item was updated successfully
+                    $totalUpdated++;
+                }
+            } catch (Mage_Core_Exception $e) {
+                $errors[] = Mage::helper('gshoppingv2')->__('The item "%s" cannot be updated at Google Content. %s', $item->getProduct()->getName(), $e->getMessage());
+                $totalFailed++;
+            } catch (Exception $e) {
+                Mage::logException($e);
+                $errors[] = Mage::helper('gshoppingv2')->__('The item "%s" hasn\'t been updated.', $item->getProduct()->getName());
+                $errors[] = $e->getMessage();
+                $totalFailed++;
+            }
         }
 
         $this->_getSession()->addNotice(
@@ -201,37 +198,34 @@ class Zookal_GShoppingV2_Model_MassOperations
         $itemsCollection = $this->_getItemsCollection($items);
         $errors          = [];
 
-        if ($itemsCollection) {
-            if (count($itemsCollection) < 1) {
-                return $this;
-            }
-            foreach ($itemsCollection as $item) {
-                /** @var $item Zookal_GShoppingV2_Model_Item */
-                if ($this->_flag && $this->_flag->isExpired()) {
-                    break;
-                }
-                try {
-                    $item->deleteItem()->delete();
-                    // The item was removed successfully
-                    $totalDeleted++;
-                } catch (Google_Service_Exception $e) {
-                    Mage::logException($e);
-                    $errors[] = Mage::helper('gshoppingv2')->__(
-                        'The item "%s" hasn\'t been deleted: %s',
-                        $item->getProduct()->getName(),
-                        $e->getMessage()
-                    );
-                } catch (Exception $e) {
-                    Mage::logException($e);
-                    $errors[] = Mage::helper('gshoppingv2')->__(
-                        'Item "%s" with weird error: %s',
-                        $item->getProduct()->getName(),
-                        $e->getMessage()
-                    );
-                }
-            }
-        } else {
+        if (!$itemsCollection || count($itemsCollection) < 1) {
             return $this;
+        }
+
+        foreach ($itemsCollection as $item) {
+            /** @var $item Zookal_GShoppingV2_Model_Item */
+            if ($this->_flag && $this->_flag->isExpired()) {
+                break;
+            }
+            try {
+                $item->deleteItem()->delete();
+                // The item was removed successfully
+                $totalDeleted++;
+            } catch (Google_Service_Exception $e) {
+                Mage::logException($e);
+                $errors[] = Mage::helper('gshoppingv2')->__(
+                    'The item "%s" hasn\'t been deleted: %s',
+                    $item->getProduct()->getName(),
+                    $e->getMessage()
+                );
+            } catch (Exception $e) {
+                Mage::logException($e);
+                $errors[] = Mage::helper('gshoppingv2')->__(
+                    'Item "%s" with weird error: %s',
+                    $item->getProduct()->getName(),
+                    $e->getMessage()
+                );
+            }
         }
 
         if ($totalDeleted > 0) {

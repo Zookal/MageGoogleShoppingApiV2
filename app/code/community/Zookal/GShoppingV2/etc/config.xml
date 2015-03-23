@@ -72,6 +72,32 @@
                 </gshoppingv2>
             </modules>
         </translate>
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <gshoppingv2_observer>
+                        <class>gshoppingv2/observer</class>
+                        <method>saveProductItem</method>
+                    </gshoppingv2_observer>
+                </observers>
+            </catalog_product_save_after>
+            <catalog_product_delete_before>
+                <observers>
+                    <gshoppingv2_observer>
+                        <class>gshoppingv2/observer</class>
+                        <method>deleteProductItem</method>
+                    </gshoppingv2_observer>
+                </observers>
+            </catalog_product_delete_before>
+            <controller_action_predispatch_adminhtml>
+                <observers>
+                    <gshoppingv2_observer>
+                        <class>gshoppingv2/observer</class>
+                        <method>checkSynchronizationOperations</method>
+                    </gshoppingv2_observer>
+                </observers>
+            </controller_action_predispatch_adminhtml>
+        </events>
         <layout>
             <updates>
                 <gshoppingv2>
