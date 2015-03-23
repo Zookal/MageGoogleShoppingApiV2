@@ -1,6 +1,5 @@
 <?php
 /**
- * @package     Mage_GoogleShopping
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @copyright   Copyright (c) 2015 BlueVisionTec UG (haftungsbeschränkt) (http://www.bluevisiontec.de)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -11,8 +10,8 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TypesController extends
-    Mage_Adminhtml_Controller_Action
+class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TypesController
+    extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Dispatches controller_action_postdispatch_adminhtml Event (as not Adminhtml router)
@@ -143,7 +142,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TypesController extends
      */
     public function saveAction()
     {
-        /** @var $typeModel Mage_GoogleShopping_Model_Type */
+        /** @var $typeModel Zookal_GShoppingV2_Model_Type */
         $typeModel = Mage::getModel('gshoppingv2/type');
         $id        = $this->getRequest()->getParam('type_id');
         if (!is_null($id)) {

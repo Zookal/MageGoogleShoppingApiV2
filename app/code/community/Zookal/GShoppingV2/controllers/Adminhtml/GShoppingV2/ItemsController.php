@@ -11,13 +11,12 @@
  *
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController extends
-    Mage_Adminhtml_Controller_Action
+class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
+    extends Mage_Adminhtml_Controller_Action
 {
     /**
      * Initialize general settings for action
-     *
-     * @return  Mage_GoogleShopping_Adminhtml_Googleshopping_ItemsController
+     * @return $this
      */
     protected function _initAction()
     {
@@ -91,7 +90,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController extends
     /**
      * Retrieve synchronization process mutex
      *
-     * @return Mage_GoogleShopping_Model_Flag
+     * @return Zookal_GShoppingV2_Model_Flag
      */
     protected function _getFlag()
     {

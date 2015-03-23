@@ -45,7 +45,7 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_OauthController extends
     /**
      * Retrieve synchronization process mutex
      *
-     * @return Mage_GoogleShopping_Model_Flag
+     * @return Zookal_GShoppingV2_Model_Flag
      */
     protected function _getFlag()
     {
