@@ -47,15 +47,15 @@ class Zookal_GShoppingV2_Model_Type extends Mage_Core_Model_Abstract
             ->loadByAttributeSetIdAndTargetCountry($this, $attributeSetId, $targetCountry);
     }
 
-    public function convertAttributes($product)
+    public function convertAttributes(Mage_Catalog_Model_Product $product)
     {
-
         $newShoppingProduct = new Google_Service_ShoppingContent_Product();
         $map                = $this->_getAttributesMapByProduct($product);
         $base               = $this->_getBaseAttributes();
         $attributes         = array_merge($base, $map);
 
         foreach ($attributes as $name => $attribute) {
+            /** @var $attribute Zookal_GShoppingV2_Model_Attribute_Default */
             $attribute->convertAttribute($product, $newShoppingProduct);
         }
 

@@ -41,10 +41,10 @@ class Zookal_GShoppingV2_Model_Attribute_Default
         ]);
 
         Mage::dispatchEvent($name, [
-            'attribute'       => $this,
-            'product'         => $product,
-            'shoppingProduct' => $shoppingProduct,
-            'dispatched'      => $dispatched,
+            'attribute'        => $this,
+            'product'          => $product,
+            'shopping_product' => $shoppingProduct,
+            'dispatched'       => $dispatched,
         ]);
 
         if ($dispatched->getHasChanges() === true) {
