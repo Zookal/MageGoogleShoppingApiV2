@@ -13,6 +13,16 @@
 class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TypesController
     extends Mage_Adminhtml_Controller_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        /**
+         * trick autoloader because the class Google_Service_ShoppingContent is included in the file
+         * Google/Service/ShoppingContent.php which contains all other classes Google_Service_ShoppingContent_*
+         */
+        new Google_Service_ShoppingContent(Mage::getSingleton('gshoppingv2/googleShopping')->getClient(null));
+    }
+
     /**
      * Dispatches controller_action_postdispatch_adminhtml Event (as not Adminhtml router)
      */

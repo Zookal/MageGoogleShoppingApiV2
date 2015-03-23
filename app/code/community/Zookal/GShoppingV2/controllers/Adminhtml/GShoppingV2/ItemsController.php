@@ -14,6 +14,16 @@
 class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
     extends Mage_Adminhtml_Controller_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        /**
+         * trick autoloader because the class Google_Service_ShoppingContent is included in the file
+         * Google/Service/ShoppingContent.php which contains all other classes Google_Service_ShoppingContent_*
+         */
+        new Google_Service_ShoppingContent(Mage::getSingleton('gshoppingv2/googleShopping')->getClient(null));
+    }
+
     /**
      * Initialize general settings for action
      * @return $this
@@ -102,10 +112,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
             return;
         }
 
-        session_write_close();
-        ignore_user_abort(true);
-        set_time_limit(0);
-
         $productIds = $this->getRequest()->getParam('product', null);
         $notifier   = Mage::getModel('adminnotification/inbox');
 
@@ -181,10 +187,6 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_ItemsController
             $this->_redirect('*/*/index', ['store' => $storeId]);
             return;
         }
-
-        session_write_close();
-        ignore_user_abort(true);
-        set_time_limit(0);
 
         $itemIds = $this->getRequest()->getParam('item');
 
