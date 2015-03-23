@@ -4,13 +4,22 @@
 
 This module is based on the official Magento GoogleShopping module and enhances
 the original module features with APIv2 support (APIv1 support removed),
-OAuth2 support and serveral additional features from the original 
+OAuth2 support and several additional features from the original 
 EnhancedGoogleShopping module.
 
 If the original Magento GoogleShopping module is installed, data will be migrated.
 
 The observer (auto sync after saving product changes) is disabled in the current
 version, but will be re-enabled soon.
+
+The observer was re-enabled with version 0.1.0 . To prevent problems when users
+are editing products which have no access to GoogleShopping through OAuth2, products
+are only updated on GoogleShopping if a valid access token for the store exists.
+
+To authenticate and get an access token go to Magento Admin -> Catalog -> Google 
+Content APIv2 and select the store view in which you want to authenticate. 
+After selecting a store view without valid access token you will be automatically
+redirected to OAuth2 authentication.
 
 ## Features
 
@@ -96,7 +105,7 @@ following content:
 }
 ```
 
-### Install composer
+#### Install composer
 ```bash
 mkdir bin
 curl -s https://getcomposer.org/installer | php -- --install-dir=bin
@@ -138,7 +147,7 @@ BlueVisionTec Modules -> GoogleShoppingApi
   * Google Developer Project Client Secret: The Client Secret generated above
   * Target Country: The country for which you want to upload your products
   * Update Google Shopping Item when Product is Updated
-  * Not implemented (observer disabled in current version, will be readded)
+	* ~~Not implemented (observer disabled in current version, will be readded)~~
   * Renew not listed items
   * When syncing a product which is not listed on GoogleShopping, it will be added
   * Remove disabled items
@@ -150,10 +159,29 @@ BlueVisionTec Modules -> GoogleShoppingApi
     The language of the category is taken from the configured store language.
     The taxonomy files for de_DE and en_US are shipped with the module package.
     Further taxonomy files should be added to /var/bluevisiontec/googleshoppingapi/data .
+  * Links to taxonomy files:
+    * http://www.google.com/basepages/producttype/taxonomy.en-US.txt
+    * http://www.google.com/basepages/producttype/taxonomy.de-DE.txt
     
 * Attributes configuration and item management can be found in Magento Admin ->
   Catalog -> Google Content APIv2
 
+* Before uploading an item you will have to set the attribute mapping
+	* Magento Admin -> Catalog -> Google Content API V2 -> Manage attributes
+	* See https://support.google.com/merchants/answer/1344057 for requirements
+	* Example for default attribute set
+		* SKU => Manufacturer's Part Number (MPN)
+		* Condition => Condition
+			* You might have to add the attribute condition as DropDown with the Options new, refurbished, used
+		* Name => Title
+		* Description => Description
+		* Price => Price 
+			* Sales price is taken if set
+		* EAN13 => GTIN
+			* You need 2 out of 3 (MPN, GTIN, Brand), so you might add a similar attribute
+		* Manufacturer => Brand
+		
+![GoogleShoppingAPI attribute mapping](docs/images/attribute-mapping.png)
 ## Taxonomies
 
 https://www.google.com/basepages/producttype/taxonomy.en-US.txt
