@@ -1,5 +1,7 @@
 # GoogleShoppingAPI v2
 
+Min PHP version: 5.4
+
 ## Magento Module GoogleShoppingAPI
 
 This module is based on the official Magento GoogleShopping module and enhances
@@ -7,13 +9,11 @@ the original module features with APIv2 support (APIv1 support removed),
 OAuth2 support and several additional features from the original 
 EnhancedGoogleShopping module.
 
-If the original Magento GoogleShopping module is installed, data will be migrated.
+Data will be migrated from Magento GoogleShopping even if Magento GoogleShopping is
+not installed.
 
-The observer (auto sync after saving product changes) is disabled in the current
-version, but will be re-enabled soon.
-
-The observer was re-enabled with version 0.1.0 . To prevent problems when users
-are editing products which have no access to GoogleShopping through OAuth2, products
+To prevent problems when users are editing products which have no access to 
+GoogleShopping through OAuth2, products
 are only updated on GoogleShopping if a valid access token for the store exists.
 
 To authenticate and get an access token go to Magento Admin -> Catalog -> Google 
@@ -22,7 +22,6 @@ After selecting a store view without valid access token you will be automaticall
 redirected to OAuth2 authentication.
 
 ## Features
-
 
 * update item expiration date on sync
 * option to renew not listed items on sync
@@ -35,21 +34,25 @@ redirected to OAuth2 authentication.
 * option to add custom parameters to product link
 * adds Austria as target country
 * ability to set Google product category in Magento product details
+* backend product edit: auto complete to choose the category for google shopping. DE and EN categories names are
+  pre-installed. 
+* Debug logging
+* Further refactorings
 
 ### Events
 
 The following events will get dispatched:
 
-- `bluevisiontec_googleshoppingapi_attribute_*` please see folder: `Model/Attribute/`
+- `gshoppingv2_attribute_*` please see folder: `Model/Attribute/`
 - and more @todo
 
-To implement an observer for the events `bluevisiontec_googleshoppingapi_attribute_*`
+To implement an observer for the events `gshoppingv2_attribute_*`
 you can use this example:
 
 ```php
 
     /**
-     * @dispatch bluevisiontec_googleshoppingapi_attribute_imagelink
+     * @dispatch gshoppingv2_attribute_imagelink
      *
      * @param Varien_Event_Observer $observer
      *
@@ -84,7 +87,7 @@ following content:
 ```json
 {
 	"require": {
-		"bluevisiontec/googleshoppingapi": "dev-master",
+		"zookal/gshoppingv2": "1.0.0",
 		"zookal/google_apiclient": "dev-master"
 	},
 	"suggest": {
@@ -105,7 +108,7 @@ following content:
 }
 ```
 
-#### Install composer
+### Install composer
 ```bash
 mkdir bin
 curl -s https://getcomposer.org/installer | php -- --install-dir=bin
@@ -133,14 +136,13 @@ http://console.developers.google.com/
 * In the next step the shop backend data has to be enterend
   * "Authorized JavaScript origins": https://www.yourmagentobackend.com/
   * "Authorized redirect uris":
-  * https://www.yourmagentobackend.com/index.php/admin/googleShoppingApi_oauth/auth/
+  * https://www.yourmagentobackend.com/index.php/admin/gShoppingV2_oauth/auth/
 * After finishing the process you can see your API credentials
   * Client ID and Client Secret must be entered in the Magento Module Configuration
 
 ### Magento Module Configuration
 
-* Basic Module configuration: Magento Admin -> System -> Configuration -> 
-BlueVisionTec Modules -> GoogleShoppingApi
+* Basic Module configuration: Magento Admin -> System -> Configuration -> Catalog -> Google Shopping V2
 
   * Account-ID: Your GoogleShopping Merchant ID
   * Google Developer Project Client ID: The Client ID generated above
@@ -154,14 +156,14 @@ BlueVisionTec Modules -> GoogleShoppingApi
   * Removes items which are disabled or out of stock from GoogleShopping
 
 * Product configuration
-  * In Product edit view you will find a new tab "GoogleShopping". 
-    Here you can set the GoogleShopping Category. 
+  * In Product edit view you will find a new tab "Google Shopping". 
+    Here you can set the Google Shopping Category. 
     The language of the category is taken from the configured store language.
-    The taxonomy files for de_DE and en_US are shipped with the module package.
-    Further taxonomy files should be added to /var/bluevisiontec/googleshoppingapi/data .
-  * Links to taxonomy files:
-    * http://www.google.com/basepages/producttype/taxonomy.en-US.txt
-    * http://www.google.com/basepages/producttype/taxonomy.de-DE.txt
+    Around 6200 taxonomies for each language de_DE and en_US are shipped with the module package and loaded
+    into a database table. Via backend text field you must use the autocomplete to retrieve the appropriate category.
+
+![autocomplete](https://raw.githubusercontent.com/Zookal/MageGoogleShoppingApiV2/refacor/gsautocomplete.png "Google Shopping autocomplete")
+
     
 * Attributes configuration and item management can be found in Magento Admin ->
   Catalog -> Google Content APIv2
@@ -184,4 +186,10 @@ BlueVisionTec Modules -> GoogleShoppingApi
 ![GoogleShoppingAPI attribute mapping](docs/images/attribute-mapping.png)
 ## Taxonomies
 
-https://www.google.com/basepages/producttype/taxonomy.en-US.txt
+* http://www.google.com/basepages/producttype/taxonomy.en-US.txt
+* http://www.google.com/basepages/producttype/taxonomy.de-DE.txt
+
+
+## Contribute
+
+Something missing or wrong? Open an issue or send a PR. :relaxed:

@@ -1,4 +1,4 @@
-app/code/community/BlueVisionTec/GoogleShoppingApi app/code/community/BlueVisionTec/GoogleShoppingApi
-app/etc/modules/BlueVisionTec_GoogleShoppingApi.xml app/etc/modules/BlueVisionTec_GoogleShoppingApi.xml
-app/locale/de_DE/BlueVisionTec_GoogleShoppingApi.csv app/locale/de_DE/BlueVisionTec_GoogleShoppingApi.csv
-app/design/adminhtml/default/default/template/googleshoppingapi app/design/adminhtml/default/default/template/googleshoppingapi
+app/code/community/Zookal/GShoppingV2 app/code/community/Zookal/GShoppingV2
+app/etc/modules/Zookal_GShoppingV2.xml app/etc/modules/Zookal_GShoppingV2.xml
+app/design/adminhtml/default/default/template/gshoppingv2 app/design/adminhtml/default/default/template/gshoppingv2
+lib/Varien/Data/Form/Element/Googleshoppingautocomplete.php lib/Varien/Data/Form/Element/Googleshoppingautocomplete.php
