@@ -100,4 +100,12 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_OauthController extends
         header('Location: ' . $client->createAuthUrl());
         exit;
     }
+
+    /**
+     * @return mixed
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/gshoppingv2');
+    }
 }

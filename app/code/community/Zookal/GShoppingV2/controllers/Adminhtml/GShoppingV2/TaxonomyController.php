@@ -44,4 +44,12 @@ class Zookal_GShoppingV2_Adminhtml_GShoppingV2_TaxonomyController
 
         $this->getResponse()->setBody($block->toHtml());
     }
+
+    /**
+     * @return mixed
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/gshoppingv2/items');
+    }
 }
